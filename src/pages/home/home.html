@@ -1,9 +1,43 @@
 <ion-header>
   <ion-navbar>
-    <ion-title>Home</ion-title>
+    <ion-title>TODO LIST</ion-title>
   </ion-navbar>
 </ion-header>
 
 <ion-content padding>
-  <button (click)="playRingtone()" ion-button>TUTUTURUUT</button>
+  <ion-list *ngIf="todoCtrl.todoList.length > 0" reorder="true" (ionItemReorder)="itemReOrder($event)">
+    <ion-item-sliding *ngFor="let item of todoCtrl.todoList;let i=index;">
+      <button ion-item *ngIf="item.status == 'PENDING'" >
+        {{ item.title }}
+      </button>  
+
+      <ion-item-options side="right">
+        <button ion-button color="danger" (click)="archiveItem(i)">
+          <ion-icon name="trash"></ion-icon>
+          DONE
+        </button>
+      </ion-item-options>
+
+      <ion-item-options side="left">
+        <button ion-button color="dark" (click)="showEditPrompt(item,i)">
+          <ion-icon name="create"></ion-icon>
+          DONE
+        </button>
+      </ion-item-options>
+    </ion-item-sliding>
+  </ion-list> 
+
+  <ion-card *ngIf="todoCtrl.todoList.length <= 0">
+    <ion-card-content>
+        Ooooops you did not add things to do. Hahahah add now and let our day begin!
+    </ion-card-content>
+  </ion-card>
+
+  <ion-fab bottom right>
+    <button ion-fab color="secondary" (click)="showTodoPrompt()">
+      <ion-icon name="add"></ion-icon>
+    </button>
+  </ion-fab>
+
+
 </ion-content>

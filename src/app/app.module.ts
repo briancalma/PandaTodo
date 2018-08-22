@@ -1,5 +1,6 @@
 import { NgModule, ErrorHandler } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
+import { HttpClientModule } from '@angular/common/http';
 import { IonicApp, IonicModule, IonicErrorHandler } from 'ionic-angular';
 import { MyApp } from './app.component';
 
@@ -14,6 +15,10 @@ import { SplashScreen } from '@ionic-native/splash-screen';
 import { NativeRingtones } from '@ionic-native/native-ringtones';
 import { Media } from '@ionic-native/media';
 import { NativeAudio } from '@ionic-native/native-audio';
+import { IonicStorageModule } from '@ionic/storage';
+
+import { TodoProvider } from '../providers/todo/todo';
+
 
 @NgModule({
   declarations: [
@@ -25,7 +30,9 @@ import { NativeAudio } from '@ionic-native/native-audio';
   ],
   imports: [
     BrowserModule,
-    IonicModule.forRoot(MyApp)
+    IonicModule.forRoot(MyApp),
+    IonicStorageModule.forRoot(),
+    HttpClientModule
   ],
   bootstrap: [IonicApp],
   entryComponents: [
@@ -41,7 +48,8 @@ import { NativeAudio } from '@ionic-native/native-audio';
     {provide: ErrorHandler, useClass: IonicErrorHandler},
     NativeRingtones,
     Media,
-    NativeAudio
+    NativeAudio,
+    TodoProvider
   ]
 })
 export class AppModule {}
