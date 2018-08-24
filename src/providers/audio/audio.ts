@@ -29,5 +29,6 @@ export class AudioProvider {
           console.log('Played the ringtone successfully!');
         });
       });
+
   }
 }

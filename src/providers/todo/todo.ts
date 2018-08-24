@@ -12,6 +12,8 @@ export class TodoProvider {
 
   constructor(public http: HttpClient, private storageCtrl: Storage) {
     // this.loadTodo();
+
+    // JSON.stringify()
   }
 
   getAllTodo() {

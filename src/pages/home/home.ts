@@ -4,8 +4,6 @@ import { TodoProvider } from '../../providers/todo/todo';
 import { AudioProvider } from '../../providers/audio/audio';
 
 
-const ringtone = 'assets/ringtones/tuturu.mp3';
-
 @Component({
   selector: 'page-home',
   templateUrl: 'home.html'
