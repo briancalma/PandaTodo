@@ -23,8 +23,8 @@ export class TodoProvider {
     let currentDate = this.getCurrentDate();
 
     this.storageCtrl.get(currentDate)
-        .then( (data) => { console.log(data) } )
-        .catch( (e) => console.log("Error in fetching data in the LOCAL STORAGE: ",e) ); 
+      .then( (data) => { console.log(data) } )
+      .catch( (e) => console.log("Error in fetching data in the LOCAL STORAGE: ",e) ); 
   }
 
   getCurrentDate() {
@@ -51,7 +51,8 @@ export class TodoProvider {
   }
 
   archivedTodoItem(index) {
-    this.todoList[index].status = 'FINISHED';
+    this.todoList.splice(index,1);  
+    // this.todoList[index].status = 'FINISHED';
   }
 
   updateTodoItem(title,index) {

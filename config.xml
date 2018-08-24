@@ -85,6 +85,8 @@
     <plugin name="cordova-plugin-media" spec="^5.0.2" />
     <plugin name="cordova-plugin-nativeaudio" spec="^3.0.9" />
     <plugin name="cordova-sqlite-storage" spec="^2.4.0" />
-    <engine name="android" spec="7.0.0" />
     <plugin name="cordova-sqlite-storage" spec="^2.4.0" />
+    <plugin name="cordova-plugin-background-mode" spec="^0.7.2" />
+    <plugin name="cordova-plugin-background-fetch" spec="^5.4.1" />
+    <engine name="android" spec="7.0.0" />
 </widget>
