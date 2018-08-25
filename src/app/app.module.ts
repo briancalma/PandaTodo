@@ -19,6 +19,7 @@ import { IonicStorageModule } from '@ionic/storage';
 
 import { TodoProvider } from '../providers/todo/todo';
 import { AudioProvider } from '../providers/audio/audio';
+import { StorageProvider } from '../providers/storage/storage';
 
 
 @NgModule({
@@ -51,7 +52,8 @@ import { AudioProvider } from '../providers/audio/audio';
     Media,
     NativeAudio,
     TodoProvider,
-    AudioProvider
+    AudioProvider,
+    StorageProvider
   ]
 })
 export class AppModule {}
