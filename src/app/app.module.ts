@@ -8,6 +8,7 @@ import { AboutPage } from '../pages/about/about';
 import { ContactPage } from '../pages/contact/contact';
 import { HomePage } from '../pages/home/home';
 import { TabsPage } from '../pages/tabs/tabs';
+import { TodoLogsPage } from '../pages/todo-logs/todo-logs';
 
 import { StatusBar } from '@ionic-native/status-bar';
 import { SplashScreen } from '@ionic-native/splash-screen';
@@ -20,6 +21,7 @@ import { IonicStorageModule } from '@ionic/storage';
 import { TodoProvider } from '../providers/todo/todo';
 import { AudioProvider } from '../providers/audio/audio';
 import { StorageProvider } from '../providers/storage/storage';
+import { ArchivedItemsPage } from '../pages/archived-items/archived-items';
 
 
 @NgModule({
@@ -28,7 +30,9 @@ import { StorageProvider } from '../providers/storage/storage';
     AboutPage,
     ContactPage,
     HomePage,
-    TabsPage
+    TabsPage,
+    ArchivedItemsPage,
+    TodoLogsPage
   ],
   imports: [
     BrowserModule,
@@ -42,7 +46,9 @@ import { StorageProvider } from '../providers/storage/storage';
     AboutPage,
     ContactPage,
     HomePage,
-    TabsPage
+    TabsPage,
+    ArchivedItemsPage,
+    TodoLogsPage
   ],
   providers: [
     StatusBar,

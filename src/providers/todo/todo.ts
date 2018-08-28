@@ -1,32 +1,69 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { Storage } from '@ionic/storage';
 import { ITodo } from '../../interfaces/todo';
+import { StorageProvider } from '../storage/storage';
+import { ITodos } from '../../interfaces/todos';
+import { Platform } from 'ionic-angular';
 
 const dateToday = new Date();
 
 @Injectable()
 export class TodoProvider {
 
-  public todoList:ITodo[] = [];
+  public todos: ITodos[] = [];
 
-  constructor(public http: HttpClient, private storageCtrl: Storage) {
-    // this.loadTodo();
+  public todoLogs: ITodos[] = [];
 
-    // JSON.stringify()
+  constructor(public http: HttpClient, private storageCtrl: StorageProvider, private platform: Platform) {
+
+    platform.ready().then( () => {
+      platform.pause.subscribe( () => {
+        let currentDate = this.getCurrentDate();
+        this.storageCtrl.saveData( currentDate, this.todos);  
+        console.log('APP IS IN BACKGROUND SAVING MODE . . .');
+      });
+    });
+
+    platform.ready().then( () => {
+      platform.resume.subscribe( () => {
+
+        // let currentDate = this.getCurrentDate();
+
+       //  this.storageCtrl.loadData(currentDate)
+
+        console.log('Loading data from the storage . . .');
+        
+
+        this.loadTodo();
+        
+      });
+    });
+
+    this.loadTodo();
+    this.getAllTodoPlayList();
   }
 
   getAllTodo() {
-    return this.todoList;
+    // return this.todoList;
   }
 
   loadTodo() {
 
     let currentDate = this.getCurrentDate();
 
-    this.storageCtrl.get(currentDate)
-      .then( (data) => { console.log(data) } )
-      .catch( (e) => console.log("Error in fetching data in the LOCAL STORAGE: ",e) ); 
+    this.storageCtrl.loadData( currentDate )
+    .then( (data) => {
+      if(data !== null) {
+        // this.title = data.title;
+        // this.todoList = data.todoList;
+        // this.archivedList = data.archivedList;
+
+        this.todos = data;
+
+        console.log(data);
+
+      }
+    });
   }
 
   getCurrentDate() {
@@ -37,28 +74,56 @@ export class TodoProvider {
     return dd + "-" + mm + "-" + yyyy;
   }
 
-  addTodo(newItem) {
+  addTodoItem(newItem,index) {
 
-    let todo = {
-      title : newItem,
-      status : 'PENDING'
-    }
+    // let todo = {
+    //   title : newItem,
+    //   status : 'PENDING'
+    // }
 
-    this.todoList.push(todo);
+    // this.todoList.push(todo);
     // console.log(newItem);
+
+    this.todos[index].todoList.push(newItem);
   }
 
   saveTodoList() {
-    this.storageCtrl.set( this.getCurrentDate(), this.todoList);
+    this.storageCtrl.saveData(this.getCurrentDate(), this.todos);
   }
 
-  archivedTodoItem(index) {
-    this.todoList.splice(index,1);  
+  archivedTodoItem(playListIndex,index) {
+    // this.todoList.splice(index,1);  
     // this.todoList[index].status = 'FINISHED';
+
+    let todo: ITodo = this.todos[playListIndex].todoList[index];
+
+    todo.status = 'FINISHED';
+
+    this.todos[playListIndex].todoList.splice(index,1);
+
+    this.todos[playListIndex].archivedList.push(todo);
+    // this.todos[playListIndex].archivedList.push(todo);
   }
 
-  updateTodoItem(title,index) {
-    this.todoList[index].title = title; 
+  updateTodoItem(playListIndex, title, index) {
+    // this.todoList[index].title = title; 
+    this.todos[playListIndex].todoList[index].title = title;
+  }
+  
+  addTodoPlayList( data ) {
+
+    // initializing some properties to an empty array.
+    data.archivedList = [];
+    data.todoList = [];
+    this.todos.push(data);
+    // console.log(this.todos);
+  }
+
+  getAllTodoPlayList() {
+    
+    let currentDate = this.getCurrentDate();
+    
+    this.todoLogs = this.storageCtrl.getAllSavedData( currentDate );
   }
 
 }

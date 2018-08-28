@@ -1,0 +1,29 @@
+<ion-header>
+  <ion-navbar>
+    <ion-title>TODO LOGS</ion-title>
+  </ion-navbar>
+</ion-header>
+<ion-content padding>
+  <ion-card *ngFor="let item of todoCtrl.todoLogs; let i = index;">
+    <ion-card-header> <ion-label> {{ item.title }} </ion-label> </ion-card-header>
+    <ion-card-content>
+      <!-- 
+        <div>
+          <ion-note *ngIf="item.archivedList.length <= 0; else todoListNotEmpty">
+            LOOKS LIKE YOU DON'T HAVE A FINISHED TASK FOR THIS TODO PLAYLIST.
+          </ion-note>
+          <br><br>
+        </div>
+        <ng-template #todoListNotEmpty>
+          <ion-list>
+            <ion-item-sliding *ngFor="let todoItem of item.archivedList;let i=index">
+              <ion-item>
+                <p>{{ todoItem.title }}</p>
+              </ion-item> 
+            </ion-item-sliding>
+          </ion-list>
+        </ng-template>
+      -->
+    </ion-card-content>
+  </ion-card>     
+</ion-content>

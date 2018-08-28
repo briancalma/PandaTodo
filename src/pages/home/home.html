@@ -1,41 +1,67 @@
 <ion-header>
   <ion-navbar>
-    <ion-title>TODO LIST</ion-title>
+    <ion-title>PANDA TODO</ion-title>
+    <ion-buttons end>
+      <button ion-button color="primary" (click)="saveTodoPlayList()">
+        SAVE
+      </button>
+    </ion-buttons>
   </ion-navbar>
 </ion-header>
 
 <ion-content padding>
-  <ion-list *ngIf="todoCtrl.todoList.length > 0" reorder="true" (ionItemReorder)="itemReOrder($event)">
-    <ion-item-sliding *ngFor="let item of todoCtrl.todoList;let i=index;">
-      <ion-item *ngIf="item.status == 'PENDING'">
-        {{ item.title }}
-      </ion-item>  
-
-      <ion-item-options side="left">
-        <button ion-button color="dark" (click)="showEditPrompt(item,i)">
-          <ion-icon name="create"></ion-icon>
-          EDIT
-        </button>
-      </ion-item-options>
-
-      <ion-item-options side="right">
-        <button ion-button color="danger" (click)="archiveItem(i)"> 
-          <ion-icon name="trash"></ion-icon>
-          DONE
-        </button>
-      </ion-item-options>
-
-    </ion-item-sliding>
-  </ion-list> 
-
-  <ion-card *ngIf="todoCtrl.todoList.length <= 0">
+    <ion-card *ngIf="todoCtrl.todos.length <= 0; else todoPlayLists">
     <ion-card-content>
-        Ooooops you did not add things to do. Hahahah add now and let our day begin!
+      <ion-img src="assets/imgs/panda.png" width="50px" height="50px" style="border-radius:100%;"></ion-img>
+      Oooooppppsssssss Hey Hello There! Mr. Panda Here . . .  
+      It seems like you dont have any TODO Playlist today,
+      Click green circle button below to add a new playlist. 
+      Have a Productive nice day ahead.
     </ion-card-content>
-  </ion-card>
+  </ion-card> 
+
+  <ng-template #todoPlayLists>
+    <ion-card *ngFor="let item of todoCtrl.todos; let todoPlayListIndex = index;">
+      <ion-card-header> <ion-label color="light" style="font-size:20px;"> {{ item.title }} </ion-label> </ion-card-header>
+      <ion-card-content>
+        <div>
+          <ion-note *ngIf="item.todoList.length <= 0; else todoListNotEmpty">
+            Click the button below to create a new item.   
+          </ion-note>
+          <br><br>
+        </div>
+        
+        <ng-template #todoListNotEmpty>
+          <ion-list reorder="true" (ionItemReorder)="itemReOrder($event,todoPlayListIndex)">
+            <ion-item-sliding *ngFor="let todoItem of item.todoList;let i=index">
+              <ion-item>
+                <p>{{ todoItem.title }}</p>
+              </ion-item> 
+
+              <ion-item-options side="left">
+                <button ion-button color="dark" (click)="showEditPrompt(todoPlayListIndex,todoItem,i)">
+                  <ion-icon name="create"></ion-icon>
+                  EDIT
+                </button>
+              </ion-item-options>
+
+              <ion-item-options side="right">
+                <button ion-button color="danger" (click)="archiveItem(todoPlayListIndex, i)"> 
+                  <ion-icon name="trash"></ion-icon>
+                  DONE
+                </button>
+              </ion-item-options>
+
+            </ion-item-sliding>
+          </ion-list>
+        </ng-template>
+        <button ion-button block (click)="showTodoItemPrompt(todoPlayListIndex)">Add New Todo Item</button>
+      </ion-card-content>
+    </ion-card> 
+  </ng-template>
 
   <ion-fab bottom right>
-    <button ion-fab color="secondary" (click)="showTodoPrompt()">
+    <button ion-fab color="secondary" (click)="showTodoPlaylistPrompt()">
       <ion-icon name="add"></ion-icon>
     </button>
   </ion-fab>  

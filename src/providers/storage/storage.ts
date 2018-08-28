@@ -2,12 +2,6 @@ import { Injectable } from '@angular/core';
 
 import { Storage } from '@ionic/storage';
 
-/*
-  Generated class for the StorageProvider provider.
-
-  See https://angular.io/guide/dependency-injection for more info on providers
-  and Angular DI.
-*/
 @Injectable()
 export class StorageProvider {
 
@@ -16,23 +10,43 @@ export class StorageProvider {
   }
 
   loadData( key ) {
-    this.storage.get(key)
-        .then( (data) => console.log('Data Retrieve : ', data));
+    return this.storage.get(key);
   }
 
   saveData( key, data ) {
+      this.storage.get(key)
+      .then( (res) => {
+        // if( res === null ) {
+        //   this.storage.set(key, data)
+        //       .then(() => console.log('SUCCESS IN SAVING ', data))
+        //       .catch((e)  =>  console.log("Error in saving : ",e));       
+        // }
+        
+        this.storage.set(key, data)
+            .then(() => console.log('SUCCESS IN SAVING ', data))
+            .catch((e)  =>  console.log("Error in saving : ",e));       
+      }); 
+  }
 
-    this.storage.get(key)
-        .then( (res) => {
-          
-          if( res === null ) {
-            this.storage.set(key, data)
-                .then(() => console.log('SUCCESS IN SAVING ', data))
-                .catch((e)  =>  console.log("Error in saving : ",e));       
-          }
+  getAllSavedData(val='') {
+    let keyList = [];
 
-        })    
-    // let isNull = this.storage.getItem( key ) === null ? true : false;   
+    let todoItems = [];
+    
+    this.storage.keys()
+      .then( (data) => {
+        keyList = data;
+    });
 
+    // This will iterate to each key and get all of its data 
+    // skipping the pass val
+    keyList.forEach( (key) => {
+      if(key !== val) {
+        this.storage.get(key)
+          .then( (res) => todoItems.push(res) );
+      }
+    });
+
+    return todoItems;
   }
 }

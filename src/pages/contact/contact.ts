@@ -10,32 +10,30 @@ import { ITodo } from '../../interfaces/todo';
 })
 export class ContactPage {
 
-  private dummyData: ITodos = {
-    title : "",
-    todoList : [],
-    archivedList: []
-  };
+//   private dummyData: ITodos = {
+//     title : "",
+//     todoList : [],
+//     archivedList: []
+//   };
 
-  private dummyTD = {
-        title: 'TODO DUMMY',
-        status: 'pending'
-  };
-
-
-  private dummyAL = {
-    title: 'AL DUMMY',
-    status: 'finished'
-};
+//   private dummyTD = {
+//         title: 'TODO DUMMY',
+//         status: 'pending'
+//   };
 
 
+//   private dummyAL = {
+//     title: 'AL DUMMY',
+//     status: 'finished'
+// };
 
   constructor(public navCtrl: NavController, private storageCtrl: StorageProvider) {
-    this.dummyData.title = "Its Dummmy!";
-    this.dummyData.todoList = [ this.dummyTD ];
-    this.dummyData.archivedList = [ this.dummyAL ];
-    this.storageCtrl.saveData( "Dummy-Key",this.dummyData );
+    // this.dummyData.title = "Its Dummmy!";
+    // this.dummyData.todoList = [ this.dummyTD ];
+    // this.dummyData.archivedList = [ this.dummyAL ];
+    // this.storageCtrl.saveData( "Dummy-Key",this.dummyData );
 
-    this.storageCtrl.loadData("Dummy-Key");
+    // this.storageCtrl.loadData("Dummy-Key");
   }
 
 }

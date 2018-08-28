@@ -2,12 +2,13 @@ import { Component } from '@angular/core';
 import { NavController, Platform , AlertController, reorderArray} from 'ionic-angular';
 import { TodoProvider } from '../../providers/todo/todo';
 import { AudioProvider } from '../../providers/audio/audio';
+import { StorageProvider } from '../../providers/storage/storage';
 
 
 @Component({
   selector: 'page-home',
   templateUrl: 'home.html'
-})
+}) 
 export class HomePage {
 
   constructor( public navCtrl: NavController, 
@@ -16,22 +17,22 @@ export class HomePage {
                private alertCtrl: AlertController,
                private audioCtrl: AudioProvider
              ) {
-    
+                
                }
 
 
   ionViewDidLoad() {
-    // this.audioCtrl.loadAudioFile();
+    
   }
-  
-  showTodoPrompt() {
+
+  showTodoPlaylistPrompt() {
     const prompt = this.alertCtrl.create({
-      title: 'TODO ITEM',
-      message: "Add a new todo item",
+      title: 'TODO Playlist',
+      message: "Add a new todo playlist",
       inputs: [
         {
           name: 'todoTxt',
-          placeholder: '* Enter new todo item'
+          placeholder: '* Enter Playlist Name'
         },
       ],
       buttons: [{
@@ -46,19 +47,50 @@ export class HomePage {
 
     prompt.present();
   }
+  
+  showTodoItemPrompt(playListIndex) {
+    const prompt = this.alertCtrl.create({
+      title: 'TODO ITEM',
+      message: "Add a new todo item",
+      inputs: [
+        {
+          name: 'todoTxt',
+          placeholder: '* Enter item'
+        },
+      ],
+      buttons: [{
+          text: 'Cancel',
+        },
+        {
+          text: 'Save',
+          handler: data => { 
+           this.todoCtrl.addTodoItem({ title: data.todoTxt, status: 'PENDING' },playListIndex );
+          }
+        }
+      ]
+    });
+
+    prompt.present();
+  }
 
   addTodo(data) {
    // console.log(data.todoTxt);
-    
-    this.todoCtrl.addTodo(data.todoTxt);
+
+   let todo = {
+     title : data.todoTxt,
+     todoList: [],
+     archiveList: []
+   };
+
+    this.todoCtrl.addTodoPlayList(todo);
   }
 
-  archiveItem(index) {
-    this.todoCtrl.archivedTodoItem(index);
+  archiveItem(playListIndex ,index) {
+    this.todoCtrl.archivedTodoItem(playListIndex, index);
     this.audioCtrl.playAudioFile();
   }
 
-  showEditPrompt( item, i ) {
+  showEditPrompt( playListIndex, item, i ) {
     const prompt = this.alertCtrl.create({
       title: 'EDIT TODO ITEM',
       message: "Edit your todo item",
@@ -74,7 +106,7 @@ export class HomePage {
         },
         {
           text: 'Update',
-          handler: data => { this.updateItem(data,i); }
+          handler: data => { this.updateItem( playListIndex, data, i); }
         }
       ]
     });
@@ -82,14 +114,18 @@ export class HomePage {
     prompt.present();
   }
   
-  updateItem( data, i ) {
+  updateItem( playListIndex , data, i ) {
     // console.log(data.todoTxt);
-    this.todoCtrl.updateTodoItem(data.todoTxt,i);
+    this.todoCtrl.updateTodoItem( playListIndex, data.todoTxt, i);
   }
 
-  itemReOrder(data) {
-    // console.log(data);
-    reorderArray(this.todoCtrl.todoList, data);
+  itemReOrder(data,todoPlayListIndex) {
+    // console.log(todoPlayListIndex);
+    reorderArray(this.todoCtrl.todos[todoPlayListIndex].todoList, data);
+  }
+
+  saveTodoPlayList() {
+    this.todoCtrl.saveTodoList();
   }
 
 }
