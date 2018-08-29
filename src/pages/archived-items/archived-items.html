@@ -1,6 +1,11 @@
 <ion-header>
   <ion-navbar>
     <ion-title>Your Finished Items</ion-title>
+    <ion-buttons end>
+      <button ion-button color="primary" menuToggle>
+        <ion-icon name="menu"></ion-icon>
+      </button>
+    </ion-buttons>
   </ion-navbar>
 </ion-header>
 <ion-content padding>
@@ -13,7 +18,7 @@
         LOOKS LIKE YOU DON'T HAVE A FINISHED TASK FOR THIS TODO PLAYLIST.
       </ion-note>
       <br><br>
-    </div>
+    </div> 
     
     <ng-template #todoListNotEmpty>
       <ion-list>

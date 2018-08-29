@@ -4,6 +4,7 @@ import { ITodo } from '../../interfaces/todo';
 import { StorageProvider } from '../storage/storage';
 import { ITodos } from '../../interfaces/todos';
 import { Platform } from 'ionic-angular';
+import { Storage } from '@ionic/storage';
 
 const dateToday = new Date();
 
@@ -12,35 +13,39 @@ export class TodoProvider {
 
   public todos: ITodos[] = [];
 
-  public todoLogs: ITodos[] = [];
+  public todoLogs: ITodos[] = [];;
 
-  constructor(public http: HttpClient, private storageCtrl: StorageProvider, private platform: Platform) {
-
-    platform.ready().then( () => {
-      platform.pause.subscribe( () => {
-        let currentDate = this.getCurrentDate();
-        this.storageCtrl.saveData( currentDate, this.todos);  
-        console.log('APP IS IN BACKGROUND SAVING MODE . . .');
-      });
-    });
+  constructor(public http: HttpClient, private storageCtrl: StorageProvider, private platform: Platform, public storage: Storage) {
 
     platform.ready().then( () => {
-      platform.resume.subscribe( () => {
+      
+      this.loadTodo();
 
-        // let currentDate = this.getCurrentDate();
-
-       //  this.storageCtrl.loadData(currentDate)
-
-        console.log('Loading data from the storage . . .');
-        
-
-        this.loadTodo();
-        
-      });
+      this.loadAllPastTodoPlayList();
+      
+      // platform.pause.subscribe( () => {
+      //   let currentDate = this.getCurrentDate();
+      //   this.storageCtrl.saveData( currentDate, this.todos);  
+      //   console.log('APP IS IN BACKGROUND SAVING MODE . . .');
+      // });
     });
 
-    this.loadTodo();
-    this.getAllTodoPlayList();
+    // platform.ready().then( () => {
+    //   platform.resume.subscribe( () => {
+
+    //     // let currentDate = this.getCurrentDate();
+
+    //    //  this.storageCtrl.loadData(currentDate)
+
+    //     console.log('Loading data from the storage . . .');
+        
+
+    //     this.loadTodo();
+        
+    //   });
+    // });
+
+   
   }
 
   getAllTodo() {
@@ -87,7 +92,7 @@ export class TodoProvider {
     this.todos[index].todoList.push(newItem);
   }
 
-  saveTodoList() {
+  saveTodoList() { 
     this.storageCtrl.saveData(this.getCurrentDate(), this.todos);
   }
 
@@ -119,11 +124,32 @@ export class TodoProvider {
     // console.log(this.todos);
   }
 
-  getAllTodoPlayList() {
+  // getAllTodoPlayList() {
     
+  //   let currentDate = this.getCurrentDate();
+    
+  //   this.todoLogs = this.storageCtrl.getAllSavedData( currentDate ); 
+  //   // this.todoLogs = this.todos;
+  // }
+
+  loadAllPastTodoPlayList() {
+     
     let currentDate = this.getCurrentDate();
     
-    this.todoLogs = this.storageCtrl.getAllSavedData( currentDate );
+    // this.todoLogs = this.storageCtrl.getAllSavedData( currentDate ); 
+    this.storageCtrl.getAllSavedData( currentDate )
+      .then( (keys) => {
+        keys.forEach( (key) => {
+          if(key !== currentDate) {
+            this.storage.get(key).then( (res) => {
+              this.todoLogs.push(res);
+            });
+          } 
+        });
+
+        console.log('TODO LOGS : ',this.todoLogs);
+        
+      });
   }
 
 }
